@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour {
 
         m_oMainCharacter.GetComponent<Player>().OnPlayerConfigurationChanged += OnCharConfigChanged;
         m_oMainCharacter.GetComponent<Player>().OnLevelEndReached += OnLevelWin;
+
+        m_eCurrentState = State.Menu;
+        Time.timeScale = 0.0f;
     }
     
     // Update is called once per frame
@@ -96,6 +99,8 @@ public class GameManager : MonoBehaviour {
     }
 
     void OnStart() {
+        Time.timeScale = 1.0f;
+
         Debug.Log("Start");
         m_bPause = false;
         m_bCharDied = false;
@@ -120,7 +125,7 @@ public class GameManager : MonoBehaviour {
 
 
     void OnEnterPause() {
-
+        Time.timeScale = 0.0f;
         Debug.Log("Gioco Entra in Pausa");
 
 
@@ -138,7 +143,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void OnExitPause() {
-
+        Time.timeScale = 1.0f;
         Debug.Log("Gioco Continua");
 
 
@@ -148,7 +153,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void OnEnd() {
-
+        Time.timeScale = 0.0f;
         m_oPauseMenu.SetActive(false);
         m_oGameUI.SetActive(false);
         m_oEndMenu.SetActive(true);
@@ -177,8 +182,14 @@ public class GameManager : MonoBehaviour {
 
 
     void OnLevelWin() {
-        Debug.Log("Vinto!");
+        m_oWinLevelUI.SetActive(true);
+        m_oGameUI.SetActive(false);
     }
+
+    void OnNextLevel() {
+
+    }
+
 
     public GameObject m_oMainCharacter;
     public GameObject m_oGameUI;
@@ -188,8 +199,6 @@ public class GameManager : MonoBehaviour {
     public GameObject m_oEndMenu;
     public GameObject m_oWinLevelUI;
     public GameObject m_oLoseLevelUI;
- 
-
 
     public bool m_bPause = false;
     public bool m_bCharDied = false;
@@ -199,6 +208,8 @@ public class GameManager : MonoBehaviour {
     public int m_iPoints = 0;
     public float m_fElapsedTime = 0;
     public State m_eCurrentState;
+
+    public GameObject m_oNextLevel;
 
     public event Action OnReInit;
     public event Action<float, float, Shape, int> OnPlayerConfigurationChanged;
