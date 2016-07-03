@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-
+using UnityEngine.Assertions;
 
 public enum State {
     Menu,
@@ -13,16 +13,21 @@ public enum State {
     Restart
 };
 
+public enum MASK {
+    UseGravity = 0x000F,
+    GravityDown = 0x00F0,
+    GravityUp = 0x0F00
+}
 
 public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        if (m_oMainCharacter != null) {
-            //m_oMainCharacter.GetComponent<BirdFly>().OnCharCollision += CharacterCollision;
-            //m_oMainCharacter.GetComponent<BirdFly>().OnCharOutOfBound += CharacterOutOfBorder;
-        }
-        
+
+        Assert.IsNotNull<GameObject>(m_oMainCharacter, "m_oMainCharacter NON SETTED!");
+
+        m_oMainCharacter.GetComponent<Player>().OnPlayerConfigurationChanged += OnCharConfigChanged;
+        m_oMainCharacter.GetComponent<Player>().OnLevelEndReached += OnLevelWin;
     }
     
     // Update is called once per frame
@@ -163,12 +168,28 @@ public class GameManager : MonoBehaviour {
         m_bPause = false;
     }
 
+    //Re-send the event of the player to all who care about it. So for example UI doesn't need to know player, it register on GameManager
+    void OnCharConfigChanged(float _fVolume, float _fMass, Shape _oShape, int _iGravity) {
+        if(OnPlayerConfigurationChanged != null) {
+            OnPlayerConfigurationChanged(_fVolume, _fMass, _oShape, _iGravity);
+        }
+    }
+
+
+    void OnLevelWin() {
+        Debug.Log("Vinto!");
+    }
+
     public GameObject m_oMainCharacter;
     public GameObject m_oGameUI;
 
     public GameObject m_oStartMenu;
     public GameObject m_oPauseMenu;
     public GameObject m_oEndMenu;
+    public GameObject m_oWinLevelUI;
+    public GameObject m_oLoseLevelUI;
+ 
+
 
     public bool m_bPause = false;
     public bool m_bCharDied = false;
@@ -180,4 +201,5 @@ public class GameManager : MonoBehaviour {
     public State m_eCurrentState;
 
     public event Action OnReInit;
+    public event Action<float, float, Shape, int> OnPlayerConfigurationChanged;
 }

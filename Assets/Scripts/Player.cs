@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 using UnityEngine.Assertions;
 
-enum Shape {
+public enum Shape {
     SPHERE = 0,
     CUBE = 1,
     SIZE = 2 // not really a shape.
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
             Assert.IsNotNull<Collider>(_m, "Collider NON SETTED!");
         }
 #endif
-
+        sendChangeConfigEvent();
     }
     
 
@@ -81,6 +81,8 @@ public class Player : MonoBehaviour {
         if ((m_oMyTransform.localScale + _oValue).x > Vector3.zero.x) {
             m_oMyTransform.localScale += _oValue;
         }
+
+        sendChangeConfigEvent();
     }
 
 
@@ -91,18 +93,22 @@ public class Player : MonoBehaviour {
         if (m_oMyRigidBody.mass + _fValue > 0.001f) {
             m_oMyRigidBody.mass += _fValue;
         }
+
+        sendChangeConfigEvent();
     }
 
 
     void toggleGravity() {
         m_bUseGravity = !m_bUseGravity;
         m_oMyRigidBody.useGravity = m_bUseGravity;
+        sendChangeConfigEvent();
     }
 
 
     void invertGravity() {
         m_bGravityDown = !m_bGravityDown;
         Physics.gravity *= -1;
+        sendChangeConfigEvent();
     }
 
     void changeShape() {
@@ -119,10 +125,33 @@ public class Player : MonoBehaviour {
             m_oMyMeshFilter.mesh = m_oObjectsMesh[(int)m_oShape];
             gameObject.AddComponent<SphereCollider>();
         }
+
+        sendChangeConfigEvent();
     }
+
+
+    void sendChangeConfigEvent() {
+        if (OnPlayerConfigurationChanged != null) {
+            int _iGravity = (m_bUseGravity ? (int)MASK.UseGravity : 0);
+            _iGravity |= (m_bGravityDown ? (int)MASK.GravityDown : (int)MASK.GravityUp);
+            OnPlayerConfigurationChanged(m_oMyTransform.localScale.x, m_oMyRigidBody.mass, m_oShape, _iGravity);
+        }
+    }
+
+
+    void OnTriggerEnter(Collider other) {
+        if(other.tag == TAG_TRIGGER_END) {
+            //Reached end of level, WIN!
+            if (OnLevelEndReached != null)
+                OnLevelEndReached();
+        }
+    }
+
 
     //VARS
     #region VARS
+
+    public static string TAG_TRIGGER_END = "EndLevel";
 
     [SerializeField]
     private Shape m_oShape = Shape.SPHERE;
@@ -139,6 +168,9 @@ public class Player : MonoBehaviour {
 
     private bool m_bUseGravity = true;
     private bool m_bGravityDown = true;
+
+    public event Action<float, float, Shape, int> OnPlayerConfigurationChanged;
+    public event Action OnLevelEndReached;
     #endregion
 
 }
