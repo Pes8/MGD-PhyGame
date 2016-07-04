@@ -5,8 +5,7 @@ using UnityEngine.Assertions;
 
 public class UI : MonoBehaviour {
 
-    // Use this for initialization
-    void Start () {
+    void OnEnable() {
         Assert.IsNotNull<Text>(m_oTxtValueVolume, "m_oTxtValueVolume NON SETTED!");
         Assert.IsNotNull<Text>(m_oTxtValueMass, "m_oTxtValueMass NON SETTED!");
         Assert.IsNotNull<Text>(m_oTxtValueShape, "m_oTxtValueShape NON SETTED!");
@@ -14,6 +13,11 @@ public class UI : MonoBehaviour {
 
         Assert.IsNotNull<GameManager>(m_oGameManager, "m_oTxtValueGravity NON SETTED!");
         m_oGameManager.OnPlayerConfigurationChanged += OnConfigurationChanged;
+    }
+
+
+    void Start () {
+        
     }
     
 

@@ -21,13 +21,17 @@ public enum MASK {
 
 public class GameManager : MonoBehaviour {
 
-    // Use this for initialization
-    void Start () {
-
+    
+    void OnEnable() {
         Assert.IsNotNull<GameObject>(m_oMainCharacter, "m_oMainCharacter NON SETTED!");
 
         m_oMainCharacter.GetComponent<Player>().OnPlayerConfigurationChanged += OnCharConfigChanged;
         m_oMainCharacter.GetComponent<Player>().OnLevelEndReached += OnLevelWin;
+    }
+
+    void Start () {
+
+       
 
         m_eCurrentState = State.Menu;
         Time.timeScale = 0.0f;

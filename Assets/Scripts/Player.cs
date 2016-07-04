@@ -41,21 +41,21 @@ public class Player : MonoBehaviour {
 
     void Update () {
         if (Input.GetKey(KeyCode.V)) {
-            if(Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            if(Input.GetKey(KeyCode.KeypadPlus) || Input.GetKey(KeyCode.Plus) || Input.GetKey(KeyCode.UpArrow)) {
                 Debug.Log("VOLUME SU!");
                 changeVolume(1);
             }
-            else if(Input.GetKeyDown(KeyCode.KeypadMinus) || Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.DownArrow)) {
+            else if(Input.GetKey(KeyCode.KeypadMinus) || Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.DownArrow)) {
                 Debug.Log("VOLUME GIU!");
                 changeVolume(-1);
             }
         }
 
         else if (Input.GetKey(KeyCode.M)) {
-            if (Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            if (Input.GetKey(KeyCode.KeypadPlus) || Input.GetKey(KeyCode.Plus) || Input.GetKey(KeyCode.UpArrow)) {
                 Debug.Log("MASS SU!");
                 changeMass(1);
-            } else if (Input.GetKeyDown(KeyCode.KeypadMinus) || Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.DownArrow)) {
+            } else if (Input.GetKey(KeyCode.KeypadMinus) || Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.DownArrow)) {
                 Debug.Log("MASS GIU!");
                 changeMass(-1);
             }
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour {
     public Collider[] m_oObjectsCollider = new Collider[(int)Shape.SIZE];
 
 
-    public Vector3 m_oMultiplier = new Vector3(0.5f, 0.5f, 1.0f); // x -> scale, y -> mass, z -> ???
+    public Vector3 m_oMultiplier = new Vector3(1.0f, 1.0f, 1.0f); // x -> scale, y -> mass, z -> ???
 
     private Rigidbody m_oMyRigidBody = null;
     private Transform m_oMyTransform = null;
