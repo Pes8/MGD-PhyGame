@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 0.0f;
     }
     
-    // Update is called once per frame
+    
     void Update () {
         if(m_eCurrentState == State.Menu) {
             OnMenu();
@@ -99,7 +99,9 @@ public class GameManager : MonoBehaviour {
 
 
     void OnMenu() {
+        m_oGameUI.SetActive(true);
         m_oStartMenu.SetActive(true);
+        
     }
 
     void OnStart() {
