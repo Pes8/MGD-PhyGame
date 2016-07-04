@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public enum State {
     Menu,
@@ -31,8 +32,7 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
 
-       
-
+        m_iNextLevel = m_iCurrentLevel + 1;
         m_eCurrentState = State.Menu;
         Time.timeScale = 0.0f;
     }
@@ -192,8 +192,8 @@ public class GameManager : MonoBehaviour {
         m_oGameUI.SetActive(false);
     }
 
-    void OnNextLevel() {
-
+    public void NextLevel() {
+        SceneManager.LoadScene(m_iNextLevel);
     }
 
 
@@ -215,7 +215,10 @@ public class GameManager : MonoBehaviour {
     public float m_fElapsedTime = 0;
     public State m_eCurrentState;
 
-    public GameObject m_oNextLevel;
+
+    private int m_iNextLevel;
+    public int m_iCurrentLevel = -1;
+
 
     public event Action OnReInit;
     public event Action<float, float, Shape, int> OnPlayerConfigurationChanged;
