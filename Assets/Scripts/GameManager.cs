@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour {
         m_iNextLevel = m_iCurrentLevel + 1;
         m_eCurrentState = State.Menu;
         Time.timeScale = 0.0f;
+
+        if (OnGameStartMenu != null)
+            OnGameStartMenu();
     }
     
     
@@ -58,23 +61,36 @@ public class GameManager : MonoBehaviour {
 
         if (m_eCurrentState == State.Menu && m_bStart) {
             m_eCurrentState = State.Start;
+            
         } else if (m_eCurrentState == State.Start) {
             m_eCurrentState = State.Play;
+            if (OnGamePlay != null)
+                OnGamePlay();
         }
         else if (m_eCurrentState == State.Play && m_bPause) {
             m_eCurrentState = State.EnterPause;
+            if (OnGamePause != null)
+                OnGamePause();
         }
         else if (m_eCurrentState == State.Play && m_bCharDied) {
             m_eCurrentState = State.End;
+            if (OnGameEnd != null)
+                OnGameEnd();
         }
         else if (m_eCurrentState == State.Pause && m_bRestart) {
             m_eCurrentState = State.Start;
+            if (OnGamePlay != null)
+                OnGamePlay();
         }
         else if (m_eCurrentState == State.Pause && !m_bPause) {
             m_eCurrentState = State.ExitPause;
+            if (OnGamePlay != null)
+                OnGamePlay();
         }
         else if(m_eCurrentState == State.End && m_bStart && !m_bCharDied) {
             m_eCurrentState = State.Start;
+            if (OnGamePlay != null)
+                OnGamePlay();
         }
 
     }
@@ -222,4 +238,8 @@ public class GameManager : MonoBehaviour {
 
     public event Action OnReInit;
     public event Action<float, float, Shape, int> OnPlayerConfigurationChanged;
+    public event Action OnGameStartMenu;
+    public event Action OnGamePlay;
+    public event Action OnGamePause;
+    public event Action OnGameEnd;
 }

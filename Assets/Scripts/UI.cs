@@ -11,7 +11,7 @@ public class UI : MonoBehaviour {
         Assert.IsNotNull<Text>(m_oTxtValueShape, "m_oTxtValueShape NON SETTED!");
         Assert.IsNotNull<Text>(m_oTxtValueGravity, "m_oTxtValueGravity NON SETTED!");
 
-        Assert.IsNotNull<GameManager>(m_oGameManager, "m_oTxtValueGravity NON SETTED!");
+        Assert.IsNotNull<GameManager>(m_oGameManager, "m_oGameManager NON SETTED!");
         m_oGameManager.OnPlayerConfigurationChanged += OnConfigurationChanged;
     }
 
