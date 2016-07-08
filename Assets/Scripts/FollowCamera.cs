@@ -44,7 +44,7 @@ public class FollowCamera : MonoBehaviour {
         }
 
         if (!m_bFreezeZ) {
-            _aNewPosition.z = m_oFollowed.transform.position.z - 40;
+            _aNewPosition.z = m_oFollowed.transform.position.z - m_iZDistance;
         }
 
         gameObject.transform.position = _aNewPosition;
@@ -85,6 +85,10 @@ public class FollowCamera : MonoBehaviour {
     private bool m_bEnabled = true;
 
     private bool m_bPlay = false;
+
+    [SerializeField]
+    private int m_iZDistance = 50;
+
 
     private Transform m_oStartPosition;
 
